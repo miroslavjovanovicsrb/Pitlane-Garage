@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Auth state comes from `src/lib/auth.tsx` (AuthProvider in __root); protected pages live under `src/routes/_authenticated/` (client-only gate) because the session is in localStorage.
+- Vehicle form validation lives in `src/lib/vehicles.ts` (zod) so create and edit share one set of rules.
