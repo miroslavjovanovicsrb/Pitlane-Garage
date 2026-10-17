@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>) => ({ redirect: typeof s.redirect === "string" ? s.redirect : undefined }),
+  validateSearch: (s: Record<string, unknown>) => ({ redirect: typeof s["redirect"] === "string" ? (s["redirect"] as string) : undefined }),
   head: () => ({
     meta: [
       { title: "Log in — PitLane Garage" },
@@ -43,7 +43,7 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<{ username?: string; email?: string; password?: string }>({});
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
 
@@ -53,12 +53,12 @@ function AuthPage() {
 
   async function submit(e: FormEvent) {
     e.preventDefault();
-    const errs: Record<string, string> = {};
+    const errs: { username?: string; email?: string; password?: string } = {};
     const p = schema.safeParse({ email, password });
-    if (!p.success) p.error.issues.forEach((i) => (errs[i.path[0] as string] ??= i.message));
+    if (!p.success) p.error.issues.forEach((i) => (errs[i.path[0] as "email" | "password"] ??= i.message));
     if (mode === "register") {
       const u = usernameSchema.safeParse(username);
-      if (!u.success) errs.username = u.error.issues[0].message;
+      if (!u.success) errs.username = u.error.issues[0]?.message ?? "Invalid username";
     }
     setErrors(errs);
     if (Object.keys(errs).length || !p.success) return;

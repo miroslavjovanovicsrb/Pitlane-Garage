@@ -39,7 +39,7 @@ function Detail() {
 
   async function remove() {
     const { error } = await supabase.from("vehicles").delete().eq("id", id);
-    if (error) return toast.error("Couldn't delete vehicle");
+    if (error) { toast.error("Couldn't delete vehicle"); return; }
     toast.success("Vehicle removed from the garage");
     qc.invalidateQueries({ queryKey: ["vehicles"] });
     qc.invalidateQueries({ queryKey: ["stats"] });

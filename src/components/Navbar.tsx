@@ -38,7 +38,7 @@ export function Navbar() {
               <Button size="sm" variant="ghost" onClick={signOut}><LogOut className="h-4 w-4" /> <span className="hidden sm:inline">Log out</span></Button>
             </>
           ) : (
-            <Button size="sm" asChild><Link to="/auth"><Flag className="h-4 w-4" /> Log in</Link></Button>
+            <Button size="sm" asChild><Link to="/auth" search={{ redirect: undefined }}><Flag className="h-4 w-4" /> Log in</Link></Button>
           )}
         </div>
       </div>
